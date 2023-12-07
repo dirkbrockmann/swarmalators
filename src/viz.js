@@ -8,10 +8,14 @@
 import * as d3 from "d3"
 import param from "./parameters.js"
 import {agents} from "./model.js"
+import cfg from "./config.js"
+import colors from "./colormaps.js"
 
 const L = param.L;
-const X = d3.scaleLinear().domain([0,L]);
-const Y = d3.scaleLinear().domain([0,L]);
+const X = d3.scaleLinear().domain([-L,L]);
+const Y = d3.scaleLinear().domain([-L,L]);
+
+const paint = colors[cfg.simulation.colormap];
 
 // the initialization function, this is bundled in simulation.js with the initialization of
 // the model and effectively executed in index.js when the whole explorable is loaded
@@ -24,18 +28,17 @@ const initialize = (display,config) => {
 	
 	X.range([0,W]);
 	Y.range([0,H]);
-		
+	
 	display.selectAll("#origin").remove();
-	display.selectAll(".node").remove();
+	origin = display.append("g").attr("id","origin")
 	
-	const origin = display.append("g").attr("id","origin")
+	origin.selectAll(".agent").data(agents).enter().append("circle")
+	.attr("class","agent")
+	.attr("r",param.agentsize)
+	.attr("cx",d=>X(d.x))
+	.attr("cy",d=>Y(d.y))
+	.style("fill",d=>paint( (d.theta + Math.PI)/(2*Math.PI) % 1 ))
 	
-	origin.selectAll(".node").data(agents).enter().append("circle")
-		.attr("class","node")
-		.attr("cx",d=>X(d.x))
-		.attr("cy",d=>Y(d.y))
-		.attr("r",X(param.agentsize/2))
-		.style("fill", d => param.color_by_heading.widget.value() ? d3.interpolateSinebow(d.theta/2/Math.PI)  : "black")
 	
 };
 
@@ -46,23 +49,21 @@ const initialize = (display,config) => {
 
 const go = (display,config) => {
 	
-	display.selectAll(".node")
+	
+	display.select("#origin").selectAll(".agent")
 		.attr("cx",d=>X(d.x))
 		.attr("cy",d=>Y(d.y))
-		.style("fill", d => param.color_by_heading.widget.value() ? d3.interpolateSinebow(d.theta/2/Math.PI)  : "black")
+			.style("fill",d=>paint( (d.theta + Math.PI)/(2*Math.PI) % 1 ))
 	
+
+//
 }
 
 // the update function is usually not required for running the explorable. Sometimes
 // it makes sense to have it, e.g. to update the visualization, if a parameter is changed,
 // e.g. a radio button is pressed, when the system is not running, e.g. when it is paused.
 
-const update = (display,config) => {
-	
-	display.selectAll(".node")
-		.style("fill", d => param.color_by_heading.widget.value() ? d3.interpolateSinebow(d.theta/2/Math.PI)  : "black")
-	
-}
+const update = go;
 
 
 export {initialize,go,update}

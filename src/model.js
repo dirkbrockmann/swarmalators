@@ -3,11 +3,14 @@
 // of visualization which are done in viz.js
 
 import param from "./parameters.js"
-import {each,range,map,mean} from "lodash-es"
-import {rad2deg,deg2rad} from "./utils"
+import {each,range,map,mean,meanBy} from "lodash-es"
+import {dist} from "./utils"
+import {randomNormal} from "d3"
 
 const L = param.L;
 const dt = param.dt;
+const rd = randomNormal(0,1);
+const ddt = Math.sqrt(dt);
 
 // typically objects needed for the explorable
 // are defined here
@@ -18,21 +21,35 @@ var agents = [];
 // the visualization and effectively executed in index.js when the whole explorable is loaded
 
 const initialize = () => {
+	
+	
 
 	// set/reset timer
 	param.timer={}; param.tick=0;
 
-	// make agents
-
-	const N = param.number_of_particles.choices[param.number_of_particles.widget.value()];
-	
-	agents = map(range(N), i => { return {
-				index:i, 
-				x:L*Math.random(), 
-				y:L*Math.random(),
-				theta: 2*Math.PI*Math.random(),
-			} 
+	agents = range(param.N).map(i => {
+		let theta = 2*Math.PI*Math.random();
+		  return {
+		    index: i,
+			x: 2*param.L*(Math.random()-0.5),
+			y: 2*param.L*(Math.random()-0.5),  
+			vx : Math.cos(theta),
+			vy : Math.sin(theta),  
+			dx : 0,
+			dy : 0,
+			omega:param.omega,
+			domega:rd(),
+			theta: Math.random()*2*Math.PI,
+			dtheta : 0  
+		  };
 	});
+	
+	const mvx = meanBy(agents,d=>d.vx)
+	const mvy = meanBy(agents,d=>d.vy)
+
+	each(agents,d=>{ d.vx-=mvx; d.vy-=mvy;})
+	
+	
 	
 };
 
@@ -44,32 +61,38 @@ const go  = () => {
 	
 	param.tick++;
 	
-	each(agents,a=>{
-		
-		var dx = dt*param.speed.widget.value()*Math.cos(a.theta);
-		var dy = dt*param.speed.widget.value()*Math.sin(a.theta);
-		
-		const x_new = a.x + dx;
-		const y_new = a.y + dy;
-		
-		if (x_new < 0) {dx+=L};
-		if (y_new < 0) {dy+=L};
-		if (x_new > L) {dx-=L};
-		if (y_new > L) {dy-=L};  
-		
-		a.x += dx;
-		a.y += dy;
-		
-		var neighbors = agents.filter(d =>  (d.x-a.x)**2 + (d.y-a.y)**2 <= param.interaction_radius.widget.value()**2 )
-		
-		var mx = mean(map(neighbors,x=> Math.cos(deg2rad(x.theta))));
-		var my = mean(map(neighbors,x=> Math.sin(deg2rad(x.theta))));	
-		
-		a.theta = rad2deg(Math.atan2(my,mx))
-		
-		a.theta += deg2rad(param.wiggle.widget.value())*(Math.random()-0.5)
-		
+	const phasemod = param.freeze_phase.widget.value() ? 0 : 1;
+	const varomega = param.frequency_variation.widget.value();
+	const J = param.like_attracts_like_strength.widget.value();
+	const K = param.synchronization_strength.widget.value();
+	const sigma = param.wiggle.widget.value();
+	
+	each(agents,n=>{
+		// n.dx = n.vx*varspeed.value;
+	// 	n.dy = n.vy*varspeed.value;
+		n.dtheta = n.omega*phasemod+varomega*n.domega;
+		each(agents,m=>{
+			if (n.index!=m.index){
+			let d = dist(n,m);
+			let kernel = (1+J*Math.cos(m.theta-n.theta)/d - 1.0/(d*d))/param.N;
+			n.dx += (m.x-n.x)*kernel;
+			n.dy += (m.y-n.y)*kernel;
+			n.dtheta += K/param.N*Math.sin(m.theta-n.theta)/d;
+		}
+		})
+		n.dx*=param.dt;
+		n.dy*=param.dt;
+		n.dtheta*=param.dt;
 	})
+	
+	
+	each(agents,n=>{
+		n.x+=n.dx+ddt*sigma*(Math.random()-0.5);
+		n.y+=n.dy+ddt*sigma*(Math.random()-0.5);
+		n.theta+=n.dtheta;
+	})
+	
+	console.log(agents)
 	
 }
 
@@ -79,7 +102,12 @@ const go  = () => {
 
 const update = () => {
 	
-	each(agents,x => {x.active = x.index < param.number_of_particles.widget.value() ? true : false})
+	each(agents,n=>{
+		n.theta+=0.5*Math.PI*2*(Math.random()-0.25*Math.PI*2)
+		let w = 2*Math.PI*Math.random()
+		n.x+=0.01*Math.cos(w);
+		n.y+=0.01*Math.sin(w);
+	})
 
 }
 

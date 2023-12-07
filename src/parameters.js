@@ -6,28 +6,45 @@
 // utils.js provides methods for extracting various types of parameters for later use
 
 export default {
-		dt:1,
-		L:100,
-		agentsize: 1.0,
-	
-		speed: {
-			range:[0,1],
-			default:0.2
+		dt:0.1,
+		N:500,
+		agentsize: 5.0,
+		L:1.3,
+		omega:1.0,		 	
+		
+		synchronization_strength: {
+			range:[-1,1],
+			default:0.51
 		},
-		wiggle: {
-			range:[0,180],
-			default:50
+		like_attracts_like_strength: {
+			range:[-1,1],
+			default:1
 		},
-		interaction_radius:{
-			range : [0,5],
-			default : 3
+		wiggle:{
+			range : [0,0.05],
+			default : 0
 		},
-		number_of_particles : {
-			choices:[50,100,200,400],
-		default:2
+		frequency_variation:{
+			range : [0,1],
+			default : 0.4439
 		},
-		color_by_heading: {
-			default: true
+		presets : {
+			choices:[
+				"Makes Me Dizzy",
+				"Fractions",
+				"Rainbow Ring",
+				"Dancing Circus",
+				"Uniform Blob",
+				"Solar Convection",				
+			],
+		default:0
+		},
+		freeze_phase: {
+			default: false
+		},
+		advanced_settings: {
+			default: false
 		}
+
 }
 

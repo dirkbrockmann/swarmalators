@@ -20,8 +20,7 @@ module.exports = {
   		anchor: name+"_container",
     	  description: meta.description,
 		scriptLoading: 'blocking'
-      }),
-	  new BundleAnalyzerPlugin()
+      })
     ],
     output: {
       path: path.resolve(__dirname, 'dist'),

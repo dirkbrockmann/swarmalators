@@ -5,10 +5,12 @@
 // to the update() method of an widget object. See below.
 
 
-import {interval} from "d3"
+import {interval,select} from "d3"
+import {each} from "lodash-es"
 import * as ct from "./controls.js"
 import cfg from "./config.js"
 import param from "./parameters.js"
+import preset_parameters from "./presets.js"
 import resetparameters from "./reset_parameters.js"
 import {iterate,initialize,update} from "./simulation.js"
 
@@ -31,7 +33,21 @@ export default (display,controls,config) => {
 	ct.reset.update(()=>resetparameters(controls))	// one button gets the resetparameters() method defined in resetparameters.js
 	ct.go.update(()=>startstop(display,config)) // one button gets the startstop function defined above
 	ct.setup.update(()=>initialize(display,config)) // this once gets the initialize() method defined in simulation.js
-	param.number_of_particles.widget.update(()=>initialize(display,config)) // here we say that if a specific parameter is changed, in this case the number of particles, we also re_initialize the system (model and visuals)
+	ct.perturb.update(()=>update(display,config))
+	ct.reset_sync.update(()=>{
+		param.synchronization_strength.widget.reset(controls,0)
+	})
+	ct.reset_like.update(()=>{
+		param.like_attracts_like_strength.widget.reset(controls,0)
+	})
+	
+	param.presets.widget.update(() => preset_parameters(controls))
+	
+	param.advanced_settings.widget.update(()=>{
+		each(ct.adv_sliders,s=>{
+			controls.select("#slider_"+s.id()).transition(1000).style("opacity",param.advanced_settings.widget.value()?1:0)
+		})
+	})
 	
 }
 

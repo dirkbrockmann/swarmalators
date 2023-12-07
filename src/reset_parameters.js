@@ -6,13 +6,15 @@
 
 import parameters from "./parameters.js"
 import * as ct from "./controls.js"
+import preset_parameters from "./presets.js"
 import {each} from "lodash-es"
 
 export default (controls) => {
-	each(ct.variables, x => x.widget.reset(controls,x.default) );
-	each(ct.booleans, x => x.widget.reset(controls,x.default) );
-	each(ct.choices, x => x.widget.reset(controls,x.default)  );
-	parameters.number_of_particles.widget.update();
+	each(ct.all_variables, x => x.widget.reset(controls,x.default) );
+	//each(ct.booleans, x => x.widget.reset(controls,x.default) );
+	preset_parameters(controls)
+	//each(ct.choices, x => x.widget.reset(controls,x.default)  );
+	//parameters.number_of_particles.widget.update();
 }
 
 

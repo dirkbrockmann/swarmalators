@@ -11,6 +11,7 @@ function iterate (display,config) {
 };
 
 function initialize (display,config) {	
+	
 	model_init();
 	visual_init(display,config); 
 };
