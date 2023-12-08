@@ -103,7 +103,7 @@ const go  = () => {
 const update = () => {
 	
 	each(agents,n=>{
-		n.theta+=0.5*Math.PI*2*(Math.random()-0.25*Math.PI*2)
+		n.theta+=0.25*Math.PI*2*(Math.random()-0.5) % (2*Math.PI)
 		let w = 2*Math.PI*Math.random()
 		n.x+=0.01*Math.cos(w);
 		n.y+=0.01*Math.sin(w);

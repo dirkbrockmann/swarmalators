@@ -47,6 +47,6 @@ export default {
 	},
 	simulation: {
 		delay:0,
-		colormap:"bam"
+		colormap:"vik"
 	}
 }
