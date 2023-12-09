@@ -1,7 +1,7 @@
 {
   "name": "@explorables/swarmalators",
   "title": "Swarmalators",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "CC-BY-4.0",
   "description": "Oscillators that sync and swarm - Patterns that emerge when collective motion and synchronization entangle",
   "repository": {
