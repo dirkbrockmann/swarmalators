@@ -3,7 +3,7 @@ import param from "./parameters.js"
 const presets =  {
 	"Rainbow Ring":{J:0.5,K:0,noise:0,varomega:0,adv:false},
 	"Dancing Circus":{J:0.93,K:-0.88,noise:0,varomega:0,adv:false},
-	"Uniform Blob":{J:0.1,K:1,noise:0,varomega:0,adv:false},
+	"Schizo Wobble":{J:1.0,K:0.51,noise:0,varomega:0.8,adv:true},
 	"Solar Convection":{J:0.1,K:1,noise:0,varomega:0.8,adv:true},
 	"Makes Me Dizzy":{J:1.0,K:.51,noise:0,varomega:0.4439,adv:true},
 	"Fractions":{J:1.0,K:-0.12,noise:0,varomega:0,adv:false}

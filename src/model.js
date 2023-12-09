@@ -3,7 +3,7 @@
 // of visualization which are done in viz.js
 
 import param from "./parameters.js"
-import {each,range,map,mean,meanBy} from "lodash-es"
+import {each,range,map,mean,meanBy,maxBy,minBy} from "lodash-es"
 import {dist} from "./utils"
 import {randomNormal} from "d3"
 
@@ -68,8 +68,6 @@ const go  = () => {
 	const sigma = param.wiggle.widget.value();
 	
 	each(agents,n=>{
-		// n.dx = n.vx*varspeed.value;
-	// 	n.dy = n.vy*varspeed.value;
 		n.dtheta = n.omega*phasemod+varomega*n.domega;
 		each(agents,m=>{
 			if (n.index!=m.index){
@@ -92,8 +90,9 @@ const go  = () => {
 		n.theta+=n.dtheta;
 	})
 	
-	console.log(agents)
-	
+//	console.log(maxBy(agents,a=>a.theta).theta)
+//	console.log(minBy(agents,a=>a.theta).theta)	
+
 }
 
 // the update function is usually not required for running the explorable. Sometimes

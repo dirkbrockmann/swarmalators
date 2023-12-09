@@ -37,8 +37,11 @@ const initialize = (display,config) => {
 	.attr("r",param.agentsize)
 	.attr("cx",d=>X(d.x))
 	.attr("cy",d=>Y(d.y))
-	.style("fill",d=>paint( (d.theta + Math.PI)/(2*Math.PI) % 1 ))
-	
+	.style("fill",d => {
+		let x = d.theta % (2*Math.PI)
+		if (x<0) x+= 2*Math.PI
+		return paint( x/(2*Math.PI))
+	})
 	
 };
 
@@ -53,7 +56,12 @@ const go = (display,config) => {
 	display.select("#origin").selectAll(".agent")
 		.attr("cx",d=>X(d.x))
 		.attr("cy",d=>Y(d.y))
-			.style("fill",d=>paint( (d.theta + Math.PI)/(2*Math.PI) % 1 ))
+//			.style("fill",d=>paint( (d.theta %   + Math.PI)/(2*Math.PI) % 1 ))
+		.style("fill",d => {
+			let x = d.theta % (2*Math.PI)
+			if (x<0) x+= 2*Math.PI
+			return paint( x/(2*Math.PI))
+		})
 	
 
 //

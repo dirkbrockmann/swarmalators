@@ -7,7 +7,7 @@
 
 export default {
 		dt:0.1,
-		N:500,
+		N:600,
 		agentsize: 5.0,
 		L:1.3,
 		omega:1.0,		 	
@@ -34,7 +34,7 @@ export default {
 				"Fractions",
 				"Rainbow Ring",
 				"Dancing Circus",
-				"Uniform Blob",
+				"Schizo Wobble",
 				"Solar Convection",				
 			],
 		default:0
