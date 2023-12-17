@@ -15,6 +15,7 @@ const L = param.L;
 const X = d3.scaleLinear().domain([-L,L]);
 const Y = d3.scaleLinear().domain([-L,L]);
 
+
 const paint = colors[cfg.simulation.colormap];
 
 // the initialization function, this is bundled in simulation.js with the initialization of
