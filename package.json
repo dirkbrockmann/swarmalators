@@ -2,7 +2,7 @@
   "name": "@explorables/swarmalators",
   "title": "Swarmalators",
   "subtitle": "Oscillators that sync and swarm",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "license": "CC-BY-4.0",
   "description": "This explorable illustrates dynamic patterns that emerge when collective motion and synchronization interact in a swarm of phase coupled oscillators.",
   "repository": {
