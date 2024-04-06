@@ -39,7 +39,7 @@ export default {
 		likebutton_anchor:{x:11,y:6},
 		likebutton_size:30,
 		
-		radio_anchor:{x:8,y:7},
+		radio_anchor:{x:7.5,y:7},
 		radio_size:180,
 		radio_orientation:"vertical",
 		radio_label_position:"right",
