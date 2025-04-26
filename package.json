@@ -4,7 +4,7 @@
   "subtitle": "Oscillators that sync and swarm",
   "description": "This explorable illustrates dynamic patterns that emerge when collective motion and synchronization interact in a swarm of phase coupled oscillators.",
   "author": "Dirk Brockmann (https://synosy.github.io)",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "license": "CC-BY-4.0",
   "repository": {
     "type": "git",
